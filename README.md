@@ -1,4 +1,4 @@
-# SipTrack 🍹
+# SipTrak 🍹
 
 App iOS para registrar y hacer seguimiento de tus consumiciones de bebidas.
 
@@ -32,10 +32,10 @@ App iOS para registrar y hacer seguimiento de tus consumiciones de bebidas.
 
 1. Abre Xcode
 2. Selecciona **File > New > Project**
-3. Elige **App** (iOS) y ponle de nombre `SipTrack`
+3. Elige **App** (iOS) y ponle de nombre `SipTrak`
 4. Selecciona **SwiftUI** como interfaz y **Swift** como lenguaje
 5. Crea el proyecto
-6. **Elimina** los archivos por defecto (`ContentView.swift`, `SipTrackApp.swift` generados)
+6. **Elimina** los archivos por defecto (`ContentView.swift`, `SipTrakApp.swift` generados)
 7. **Arrastra** la carpeta `DrinkTracker/` de este repo al proyecto en Xcode (asegúrate de marcar "Copy items if needed" y "Create groups")
 
 ### 2. Añadir Firebase SDK
@@ -52,7 +52,7 @@ App iOS para registrar y hacer seguimiento de tus consumiciones de bebidas.
 
 1. Ve a [Firebase Console](https://console.firebase.google.com/)
 2. Crea un nuevo proyecto (o usa uno existente)
-3. Añade una app iOS con el Bundle ID de tu proyecto (ej: `com.tuNombre.SipTrack`)
+3. Añade una app iOS con el Bundle ID de tu proyecto (ej: `com.tuNombre.SipTrak`)
 4. Descarga el archivo `GoogleService-Info.plist`
 5. Arrastra `GoogleService-Info.plist` al proyecto en Xcode (al nivel raíz del target)
 
@@ -78,8 +78,8 @@ App iOS para registrar y hacer seguimiento de tus consumiciones de bebidas.
 ## Estructura del proyecto
 
 ```
-SipTrack/
-├── SipTrackApp.swift          # Entry point + Firebase init
+SipTrak/
+├── SipTrakApp.swift          # Entry point + Firebase init
 ├── Models/
 │   ├── DrinkCategory.swift        # Categorías (cubata, chupito, baja graduación)
 │   ├── Drink.swift                # Modelo de bebida
