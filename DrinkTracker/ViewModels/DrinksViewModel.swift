@@ -38,10 +38,11 @@ class DrinksViewModel: ObservableObject {
             let drinkId = try await service.addDrink(drink)
 
             if let image = image {
-                let url = try await service.uploadImage(image, drinkId: drinkId)
-                drink.id = drinkId
-                drink.imageURL = url
-                try await service.updateDrink(drink)
+                if let localPath = service.saveImageLocally(image, drinkId: drinkId) {
+                    drink.id = drinkId
+                    drink.localImagePath = localPath
+                    try await service.updateDrink(drink)
+                }
             }
 
             await loadDrinks()
@@ -52,8 +53,8 @@ class DrinksViewModel: ObservableObject {
 
     func deleteDrink(_ drink: Drink) async {
         do {
-            if drink.imageURL != nil, let id = drink.id {
-                try? await service.deleteImage(drinkId: id)
+            if let id = drink.id {
+                service.deleteLocalImage(drinkId: id)
             }
             try await service.deleteDrink(drink)
             await loadDrinks()
@@ -78,7 +79,7 @@ class DrinksViewModel: ObservableObject {
             category: category,
             size: size,
             timestamp: Date(),
-            imageURL: drink.imageURL
+            imageURL: drink.localImagePath
         )
 
         do {

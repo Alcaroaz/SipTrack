@@ -1,14 +1,48 @@
 import Foundation
 import FirebaseFirestore
-import FirebaseStorage
 import UIKit
 
 class FirestoreService {
     static let shared = FirestoreService()
     private let db = Firestore.firestore()
-    private let storage = Storage.storage()
 
-    private init() {}
+    private init() {
+        createImageDirectoryIfNeeded()
+    }
+
+    // MARK: - Local Image Storage
+
+    private var imageDirectory: URL {
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return docs.appendingPathComponent("drink_images")
+    }
+
+    private func createImageDirectoryIfNeeded() {
+        let fm = FileManager.default
+        if !fm.fileExists(atPath: imageDirectory.path) {
+            try? fm.createDirectory(at: imageDirectory, withIntermediateDirectories: true)
+        }
+    }
+
+    func saveImageLocally(_ image: UIImage, drinkId: String) -> String? {
+        guard let data = image.jpegData(compressionQuality: 0.6) else { return nil }
+        let fileURL = imageDirectory.appendingPathComponent("\(drinkId).jpg")
+        do {
+            try data.write(to: fileURL)
+            return fileURL.path
+        } catch {
+            return nil
+        }
+    }
+
+    func deleteLocalImage(drinkId: String) {
+        let fileURL = imageDirectory.appendingPathComponent("\(drinkId).jpg")
+        try? FileManager.default.removeItem(at: fileURL)
+    }
+
+    func loadLocalImage(path: String) -> UIImage? {
+        return UIImage(contentsOfFile: path)
+    }
 
     // MARK: - Drinks
 
@@ -92,24 +126,5 @@ class FirestoreService {
     func updateRecord(_ record: DrinkRecord) async throws {
         guard let id = record.id else { return }
         try db.collection("records").document(id).setData(from: record)
-    }
-
-    // MARK: - Image Upload
-
-    func uploadImage(_ image: UIImage, drinkId: String) async throws -> String {
-        guard let imageData = image.jpegData(compressionQuality: 0.6) else {
-            throw NSError(domain: "FirestoreService", code: -1,
-                          userInfo: [NSLocalizedDescriptionKey: "No se pudo comprimir la imagen"])
-        }
-
-        let ref = storage.reference().child("drink_images/\(drinkId).jpg")
-        _ = try await ref.putDataAsync(imageData)
-        let url = try await ref.downloadURL()
-        return url.absoluteString
-    }
-
-    func deleteImage(drinkId: String) async throws {
-        let ref = storage.reference().child("drink_images/\(drinkId).jpg")
-        try await ref.delete()
     }
 }

@@ -11,24 +11,13 @@ struct DrinkCardView: View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 8) {
                 // Drink image
-                if let imageURL = drink.imageURL, let url = URL(string: imageURL) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        case .failure:
-                            placeholderImage
-                        case .empty:
-                            ProgressView()
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        @unknown default:
-                            placeholderImage
-                        }
-                    }
-                    .frame(height: 130)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                if let localPath = drink.localImagePath,
+                   let uiImage = UIImage(contentsOfFile: localPath) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 130)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 } else {
                     placeholderImage
                         .frame(height: 130)
