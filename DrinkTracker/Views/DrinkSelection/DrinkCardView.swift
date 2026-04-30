@@ -10,13 +10,14 @@ struct DrinkCardView: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 8) {
-                // Drink image
-                if let localPath = drink.localImagePath,
-                   let uiImage = UIImage(contentsOfFile: localPath) {
+                // Drink image from local storage
+                if let path = drink.localImagePath,
+                   let uiImage = UIImage(contentsOfFile: path) {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()
                         .frame(height: 130)
+                        .clipped()
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 } else {
                     placeholderImage
@@ -84,7 +85,7 @@ struct DrinkCardView: View {
 
 #Preview {
     DrinkCardView(
-        drink: Drink(name: "Gin Tonic", category: .cubata, imageURL: nil, isFavorite: true),
+        drink: Drink(name: "Gin Tonic", category: .cubata, imageFileName: nil, isFavorite: true),
         isEditing: true,
         onTap: {},
         onFavorite: {},

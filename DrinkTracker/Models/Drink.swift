@@ -5,18 +5,21 @@ struct Drink: Identifiable, Codable, Equatable {
     @DocumentID var id: String?
     var name: String
     var category: DrinkCategory
-    var imageURL: String?
+    var imageFileName: String?
     var isFavorite: Bool
-
-    var localImagePath: String?
 
     enum CodingKeys: String, CodingKey {
         case id
         case name
         case category
-        case imageURL
+        case imageFileName
         case isFavorite
-        case localImagePath
+    }
+
+    var localImagePath: String? {
+        guard let fileName = imageFileName else { return nil }
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return docs.appendingPathComponent("drink_images/\(fileName)").path
     }
 
     static func == (lhs: Drink, rhs: Drink) -> Bool {

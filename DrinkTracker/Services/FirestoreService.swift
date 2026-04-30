@@ -26,11 +26,13 @@ class FirestoreService {
 
     func saveImageLocally(_ image: UIImage, drinkId: String) -> String? {
         guard let data = image.jpegData(compressionQuality: 0.6) else { return nil }
-        let fileURL = imageDirectory.appendingPathComponent("\(drinkId).jpg")
+        let fileName = "\(drinkId).jpg"
+        let fileURL = imageDirectory.appendingPathComponent(fileName)
         do {
             try data.write(to: fileURL)
-            return fileURL.path
+            return fileName
         } catch {
+            print("Error saving image: \(error)")
             return nil
         }
     }
@@ -38,10 +40,6 @@ class FirestoreService {
     func deleteLocalImage(drinkId: String) {
         let fileURL = imageDirectory.appendingPathComponent("\(drinkId).jpg")
         try? FileManager.default.removeItem(at: fileURL)
-    }
-
-    func loadLocalImage(path: String) -> UIImage? {
-        return UIImage(contentsOfFile: path)
     }
 
     // MARK: - Drinks

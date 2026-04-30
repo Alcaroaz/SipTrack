@@ -31,7 +31,7 @@ class DrinksViewModel: ObservableObject {
         var drink = Drink(
             name: name,
             category: category,
-            imageURL: nil,
+            imageFileName: nil,
             isFavorite: false
         )
 
@@ -39,9 +39,9 @@ class DrinksViewModel: ObservableObject {
             let drinkId = try await service.addDrink(drink)
 
             if let image = image {
-                if let localPath = service.saveImageLocally(image, drinkId: drinkId) {
+                if let fileName = service.saveImageLocally(image, drinkId: drinkId) {
                     drink.id = drinkId
-                    drink.localImagePath = localPath
+                    drink.imageFileName = fileName
                     try await service.updateDrink(drink)
                 }
             }

@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct DrinkListView: View {
     let category: DrinkCategory
@@ -75,9 +76,10 @@ struct DrinkListView: View {
                     Task {
                         await viewModel.recordDrink(drink, size: size)
                         showSizeSelection = false
+                        selectedDrink = nil
                     }
                 }
-                .presentationDetents([.height(300)])
+                .presentationDetents([.medium])
             }
         }
         .task {
