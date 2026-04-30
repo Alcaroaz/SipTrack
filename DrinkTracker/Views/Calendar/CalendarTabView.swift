@@ -26,7 +26,7 @@ struct CalendarTabView: View {
                 }
                 .padding(.vertical)
             }
-            .navigationTitle("SipTrack")
+            .navigationTitle("SipTrak")
             .task {
                 await viewModel.loadMonthData()
                 await viewModel.loadRecords(for: viewModel.selectedDate)

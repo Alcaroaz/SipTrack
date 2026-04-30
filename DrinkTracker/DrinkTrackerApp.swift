@@ -10,7 +10,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 @main
-struct SipTrackApp: App {
+struct SipTrakApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {
